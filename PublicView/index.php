@@ -146,23 +146,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="side-info mb-30">
                 <div class="contact-list mb-30">
                     <h4>Office Address</h4>
-                    <p>123/A, Miranda City Likaoli
-                        Prikano, Dope</p>
+                    <p><?= htmlspecialchars($contact_data['address'] ?? '') ?></p>
                 </div>
                 <div class="contact-list mb-30">
                     <h4>Phone Number</h4>
-                    <p>+0989 7876 9865 9</p>
+                    <p><?= htmlspecialchars($contact_data['phone'] ?? '') ?></p>
                 </div>
                 <div class="contact-list mb-30">
                     <h4>Email Address</h4>
-                    <p>info@example.com</p>
+                    <p><?= htmlspecialchars($contact_data['email'] ?? '') ?></p>
                 </div>
             </div>
             <div class="social-icon-right mt-20">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="<?= $data['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                <a href="<?= $data['x_account']; ?>"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="<?= $data['instagram']; ?>"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
         <div class="offcanvas-overly"></div>
