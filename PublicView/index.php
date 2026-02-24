@@ -25,6 +25,11 @@ $services_data = $services_result->fetch_assoc();
 $contact_result = $conn->query("SELECT * FROM contact WHERE id = 1");
 $contact_data = $contact_result->fetch_assoc();
 
+
+// Fetch portfolio/work data
+$p_result = $conn->query("SELECT * FROM work WHERE id = 1");
+$p_data = $p_result && $p_result->num_rows > 0 ? $p_result->fetch_assoc() : [];
+
 ?>
 <?php
 require_once __DIR__ . '/../config/db.php';
@@ -334,19 +339,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 pitem">
-                        <div class="speaker-box">
-                            <div class="speaker-thumb">
-                                <img src="img/images/1.jpg" alt="img">
-                            </div>
-                            <div class="speaker-overlay">
-                                <span>Design</span>
-                                <h4><a href="portfolio-single.php">Hamble Triangle</a></h4>
-                                <a href="portfolio-single.php" class="arrow-btn">More information <span></span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 pitem">
+<?php for ($i = 1; $i <= 6; $i++): ?>
+    <?php 
+        $imgField = "image{$i}_path"; 
+        $textField = "image{$i}_text"; 
+    ?>
+    <?php if (!empty($p_data[$imgField])): ?>
+        <div class="col-lg-4 col-md-6 pitem">
+            <div class="speaker-box">
+                <div class="speaker-thumb">
+                    <img src="../<?= htmlspecialchars($p_data[$imgField]); ?>" alt="Image <?= $i ?>" class="img-fluid">
+                </div>
+                <div class="speaker-overlay">
+                    <span>Design</span>
+                    <h4>
+                        <a href="portfolio-single.php"><?= htmlspecialchars($p_data[$textField] ?? 'Portfolio Item'); ?></a>
+                    </h4>
+                    <a href="portfolio-single.php" class="arrow-btn">
+                        More information <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+<?php endfor; ?>
+</div>
+                    <!-- <div class="col-lg-4 col-md-6 pitem">
                         <div class="speaker-box">
                             <div class="speaker-thumb">
                                 <img src="img/images/2.jpg" alt="img">
@@ -405,7 +423,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <a href="portfolio-single.php" class="arrow-btn">More information <span></span></a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </section>
