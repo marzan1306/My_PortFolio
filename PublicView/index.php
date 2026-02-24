@@ -19,8 +19,36 @@ if ($result && $result->num_rows > 0) {
 }
 // print_r($rows);
 // die();
+$services_result = $conn->query("SELECT * FROM services WHERE id = 1");
+$services_data = $services_result->fetch_assoc();
+
+$contact_result = $conn->query("SELECT * FROM contact WHERE id = 1");
+$contact_data = $contact_result->fetch_assoc();
 
 ?>
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $message = $_POST['message'] ?? '';
+
+    // Optional: basic validation
+    if (!empty($name) && !empty($email) && !empty($message)) {
+
+        $stmt = $conn->prepare("INSERT INTO messages (name, email, message) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $name, $email, $message);
+        $stmt->execute();
+
+        $success = true;
+    } else {
+        $error = "Please fill all required fields.";
+    }
+}
+?>
+
 
 <!doctype html>
 <html class="no-js" lang="en">
@@ -229,60 +257,66 @@ if ($result && $result->num_rows > 0) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.2s">
-                            <i class="fab fa-react"></i>
-                            <h3>Creative Design</h3>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum indust.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.4s">
-                            <i class="fab fa-free-code-camp"></i>
-                            <h3>Unlimited Features</h3>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum indust.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.6s">
-                            <i class="fal fa-desktop"></i>
-                            <h3>Ultra Responsive</h3>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum indust.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.2s">
-                            <i class="fal fa-lightbulb-on"></i>
-                            <h3>Creative Ideas</h3>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum indust.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.4s">
-                            <i class="fal fa-edit"></i>
-                            <h3>Easy Customization</h3>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum indust.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.6s">
-                            <i class="fal fa-headset"></i>
-                            <h3>Supper Support</h3>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum indust.
-                            </p>
-                        </div>
-                    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.2s">
+            <i class="fab fa-react"></i>
+            <h3><?= htmlspecialchars($services_data['title1'] ?? '') ?></h3>
+            <p>
+                <?= htmlspecialchars($services_data['title1_text'] ?? '') ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.4s">
+            <i class="fab fa-free-code-camp"></i>
+            <h3><?= htmlspecialchars($services_data['title2'] ?? '') ?></h3>
+            <p>
+                <?= htmlspecialchars($services_data['title2_text'] ?? '') ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.6s">
+            <i class="fal fa-desktop"></i>
+            <h3><?= htmlspecialchars($services_data['title3'] ?? '') ?></h3>
+            <p>
+                <?= htmlspecialchars($services_data['title3_text'] ?? '') ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.2s">
+            <i class="fal fa-lightbulb-on"></i>
+            <h3><?= htmlspecialchars($services_data['title4'] ?? '') ?></h3>
+            <p>
+                <?= htmlspecialchars($services_data['title4_text'] ?? '') ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.4s">
+            <i class="fal fa-edit"></i>
+            <h3><?= htmlspecialchars($services_data['title5'] ?? '') ?></h3>
+            <p>
+                <?= htmlspecialchars($services_data['title5_text'] ?? '') ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="icon_box_01 wow fadeInLeft" data-wow-delay="0.6s">
+            <i class="fal fa-headset"></i>
+            <h3><?= htmlspecialchars($services_data['title6'] ?? '') ?></h3>
+            <p>
+                <?= htmlspecialchars($services_data['title6_text'] ?? '') ?>
+            </p>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </section>
@@ -527,26 +561,32 @@ if ($result && $result->num_rows > 0) {
                             <h2>Contact Information</h2>
                         </div>
                         <div class="contact-content">
-                            <p>Event definition is - somthing that happens occurre How evesnt sentence. Synonym when an unknown printer took a galley.</p>
-                            <h5>OFFICE IN <span>NEW YORK</span></h5>
+                            <p><?= htmlspecialchars($contact_data['description'] ?? '') ?></p>
+                            <h5>OFFICE IN <span><?= htmlspecialchars($contact_data['office_city'] ?? '') ?></span></h5>
                             <div class="contact-list">
                                 <ul>
-                                    <li><i class="fas fa-map-marker"></i><span>Address :</span>Event Center park WT 22 New York</li>
-                                    <li><i class="fas fa-headphones"></i><span>Phone :</span>+9 125 645 8654</li>
-                                    <li><i class="fas fa-globe-asia"></i><span>e-mail :</span>info@exemple.com</li>
+                                    <li><i class="fas fa-map-marker"></i><span>Address :</span><?= htmlspecialchars($contact_data['address'] ?? '') ?></li>
+                                    <li><i class="fas fa-headphones"></i><span>Phone :</span><?= htmlspecialchars($contact_data['phone'] ?? '') ?></li>
+                                    <li><i class="fas fa-globe-asia"></i><span>e-mail :</span><?= htmlspecialchars($contact_data['email'] ?? '') ?></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="contact-form">
-                            <form action="#">
-                                <input type="text" placeholder="your name *">
-                                <input type="email" placeholder="your email *">
-                                <textarea name="message" id="message" placeholder="your message *"></textarea>
-                                <button class="btn">SEND</button>
-                            </form>
-                        </div>
+    <?php if (!empty($success)): ?>
+        <div class="alert alert-success">Message sent successfully!</div>
+    <?php elseif (!empty($error)): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
+
+    <form method="POST">
+        <input type="text" name="name" placeholder="Your Name *" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
+        <input type="email" name="email" placeholder="Your Email *" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+        <textarea name="message" placeholder="Your Message *"><?= htmlspecialchars($_POST['message'] ?? '') ?></textarea>
+        <button type="submit" class="btn">SEND</button>
+    </form>
+</div>
                     </div>
                 </div>
             </div>
