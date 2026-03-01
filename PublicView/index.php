@@ -30,6 +30,17 @@ $contact_data = $contact_result->fetch_assoc();
 $p_result = $conn->query("SELECT * FROM work WHERE id = 1");
 $p_data = $p_result && $p_result->num_rows > 0 ? $p_result->fetch_assoc() : [];
 
+$stats_result = $conn->query("SELECT * FROM stats WHERE id = 1");
+$stats_data = $stats_result && $stats_result->num_rows > 0 ? $stats_result->fetch_assoc() : [];
+
+$test_result = $conn->query("SELECT * FROM testimonial ORDER BY id DESC");
+
+$test = []; // initialize
+
+if ($test_result && $test_result->num_rows > 0) {
+    $test = $test_result->fetch_all(MYSQLI_ASSOC);
+}
+
 ?>
 <?php
 require_once __DIR__ . '/../config/db.php';
@@ -440,7 +451,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <i class="flaticon-award"></i>
                                 </div>
                                 <div class="fact-content">
-                                    <h2><span class="count">245</span></h2>
+                                    <h2><span class="count"><?= $stats_data['item'] ?? '' ?></span></h2>
                                     <span>Feature Item</span>
                                 </div>
                             </div>
@@ -451,7 +462,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <i class="flaticon-like"></i>
                                 </div>
                                 <div class="fact-content">
-                                    <h2><span class="count">345</span></h2>
+                                    <h2><span class="count"><?= $stats_data['product'] ?? '' ?></span></h2>
                                     <span>Active Products</span>
                                 </div>
                             </div>
@@ -462,7 +473,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <i class="flaticon-event"></i>
                                 </div>
                                 <div class="fact-content">
-                                    <h2><span class="count">39</span></h2>
+                                    <h2><span class="count"><?= $stats_data['experience'] ?? '' ?></span></h2>
                                     <span>Year Experience</span>
                                 </div>
                             </div>
@@ -473,7 +484,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <i class="flaticon-woman"></i>
                                 </div>
                                 <div class="fact-content">
-                                    <h2><span class="count">3</span>k</h2>
+                                    <h2><span><?= $stats_data['client'] ?? '' ?></span></h2>
                                     <span>Our Clients</span>
                                 </div>
                             </div>
@@ -486,47 +497,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- testimonial-area -->
         <section class="testimonial-area primary-bg pt-115 pb-115">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-6 col-lg-8">
-                        <div class="section-title text-center mb-70">
-                            <span>testimonial</span>
-                            <h2>happy customer quotes</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-xl-9 col-lg-10">
-                        <div class="testimonial-active">
-                            <div class="single-testimonial text-center">
-                                <div class="testi-avatar">
-                                    <img src="img/images/testi_avatar.png" alt="img">
-                                </div>
-                                <div class="testi-content">
-                                    <h4><span>“</span> An event is a message sent by an object to signal the occur rence of an action. The action can causd user interaction such as a button click, or it can result <span>”</span></h4>
-                                    <div class="testi-avatar-info">
-                                        <h5>tonoy jakson</h5>
-                                        <span>head of idea</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single-testimonial text-center">
-                                <div class="testi-avatar">
-                                    <img src="img/images/testi_avatar.png" alt="img">
-                                </div>
-                                <div class="testi-content">
-                                    <h4><span>“</span> An event is a message sent by an object to signal the occur rence of an action. The action can causd user interaction such as a button click, or it can result <span>”</span></h4>
-                                    <div class="testi-avatar-info">
-                                        <h5>tonoy jakson</h5>
-                                        <span>head of idea</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-8">
+                <div class="section-title text-center mb-70">
+                    <span>testimonial</span>
+                    <h2>happy customer quotes</h2>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-lg-10">
+                <div class="testimonial-active">
+
+                    <?php foreach ($test as $row): 
+                        //print_r($test)
+                        ?>
+                        
+                    <div class="single-testimonial text-center">
+                        <div class="testi-avatar">
+                            <img src="../<?= !empty($row['image']) ? 'img/images/' . htmlspecialchars(basename($row['image'])) : 'img/images/testi_avatar.png' ?>" alt="img">
+                        </div>
+                        <div class="testi-content">
+                            <h4>
+                                <span>"</span>
+                                <?= htmlspecialchars($row['quote'] ?? '') ?>
+                                <span>"</span>
+                            </h4>
+                            <div class="testi-avatar-info">
+                                <h5><?= htmlspecialchars($row['name'] ?? '') ?></h5>
+                                <span><?= htmlspecialchars($row['designation'] ?? '') ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
         <!-- testimonial-area-end -->
 
         <!-- brand-area -->
